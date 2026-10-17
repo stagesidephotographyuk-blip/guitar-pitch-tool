@@ -20,8 +20,13 @@ jobs:
       - name: Build Web Export
         run: npx expo export -p web
 
-      - name: Install Electron & Builder
-        run: npm install electron electron-builder@latest --save-dev
+      - name: Create Electron Launcher
+        run: |
+          Set-Content -Path main.js -Value "const {app, BrowserWindow} = require('electron'); const path = require('path'); function createWindow() { const win = new BrowserWindow({ width: 1200, height: 800 }); win.loadFile(path.join(__dirname, 'dist/index.html')); } app.whenReady().then(createWindow);"
+          Add-Content -Path package.json -Value "`n`"
 
-      - name: Build Windows Executable
+      - name: Install Electron & Builder
+        run: npm install electron electron-builder --save-dev
+
+      - name: Package Windows App
         run: npx electron-builder --win --x64 --dir
