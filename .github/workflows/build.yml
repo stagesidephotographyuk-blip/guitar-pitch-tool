@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -12,7 +12,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 16
+          node-version: 18
 
       - name: Install Dependencies
         run: npm install
@@ -20,10 +20,8 @@ jobs:
       - name: Build Web Export
         run: npx expo export -p web
 
-      - name: Package to Desktop
-        uses: tavdata/setup-nativefier-action@v1
-        with:
-          url: 'file:///${{ github.workspace }}/dist/index.html'
-          name: 'GuitarPitchTool'
-          width: '1200'
-          height: '800'
+      - name: Install Electron & Builder
+        run: npm install electron electron-builder@latest --save-dev
+
+      - name: Build Windows Executable
+        run: npx electron-builder --win --x64 --dir
