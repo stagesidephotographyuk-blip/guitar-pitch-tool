@@ -20,10 +20,6 @@ jobs:
       - name: Build Web Export
         run: npx expo export -p web
 
-      - name: Create Launcher Script
-        run: |
-          node -e "const fs = require('fs'); fs.writeFileSync('main.js', \"const {app, BrowserWindow} = require('electron'); function createWindow() { const win = new BrowserWindow({ width: 1200, height: 800 }); win.loadFile('dist/index.html'); } app.whenReady().then(createWindow);\");"
-
       - name: Install Electron & Builder
         run: npm install electron electron-builder --save-dev
 
